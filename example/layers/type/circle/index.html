@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../../../../mapbox-gl-js/dist/mapbox-gl-dev.js"></script>
+  <link rel="stylesheet" href="../../../../mapbox-gl-js/dist/mapbox-gl.css">
+</head>
+<body>
+  <div id="map" style="width:800px;height:800px"></div>
+  <button id="draw">绘制</button>
+</body>
+</html>
+
+<script>
+  const mapContainer = document.getElementById('map');
+  const drawBtn = document.getElementById('draw');
+  let map
+  function initMap(){
+    map = new mapboxgl.Map({
+      "container": mapContainer,
+      "center": [116.46, 39.92],
+      zoom: 17,
+      "style": "mapbox://styles/huangguangfa/clghetttb003g01o1dvhwxt1n",
+      "accessToken": "pk.eyJ1IjoiaHVhbmdndWFuZ2ZhIiwiYSI6ImNsZ2hlZnZpazBrdmUzZ28yOGJ4cXZ2b2gifQ.cIemK-ILf_igHsL3VBaSsw",
+      attributionControl: true
+    });
+  }
+  initMap()
+
+  drawBtn.addEventListener('click', () => {
+    map.addLayer({
+      id:'circle-layer',
+      type:"circle",
+      source:{
+        type:'geojson',
+        data:{
+          type:"FeatureCollection",
+          features:[
+             {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [116.46121446481226, 39.92009126931657]
+              },
+              properties: {
+                title: "测试数据",
+              }
+            }, 
+          ]
+        }
+      },
+      paint:{
+        'circle-radius': 100,
+        'circle-color': '#3388ff',
+        'circle-opacity': 0.5,
+        'circle-stroke-width': 1,
+      }
+    })
+
+  })
+</script>
