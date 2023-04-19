@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../../../mapbox-gl-js/dist/mapbox-gl-dev.js"></script>
+  <link rel="stylesheet" href="../../../mapbox-gl-js/dist/mapbox-gl.css">
+</head>
+<body>
+  <div id="map" style="width:800px;height:800px"></div>
+  <button id="draw">绘制</button>
+</body>
+</html>
+
+<script>
+  const mapContainer = document.getElementById('map');
+  const drawBtn = document.getElementById('draw');
+  let map
+  function initMap(){
+    map = new mapboxgl.Map({
+      "container": mapContainer,
+      "center": [116.46, 39.92],
+      zoom: 17,
+      "style": "mapbox://styles/huangguangfa/clghetttb003g01o1dvhwxt1n",
+      // "style": "mapbox://styles/mapbox/satellite-streets-v11", // 卫星
+      "accessToken": "pk.eyJ1IjoiaHVhbmdndWFuZ2ZhIiwiYSI6ImNsZ2hlZnZpazBrdmUzZ28yOGJ4cXZ2b2gifQ.cIemK-ILf_igHsL3VBaSsw",
+      attributionControl: true,
+    })
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.FullscreenControl({container: document.querySelector('body')}));
+    map.addControl(new mapboxgl.ScaleControl({ maxWidth: 80, unit: 'imperial' }));
+
+  }
+  initMap()
+
+  drawBtn.addEventListener('click', () => {
+    console.log('绘制')
+    map.addLayer({
+      id:"fill-extrusion-layer",
+      type:"fill-extrusion",
+      source:{
+        type:"geojson",
+        data:{
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "height": 50
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [116.46025749240465, 39.92071686143578],
+                    [116.46205457244503, 39.92063046422908],
+                    [116.46201165709937, 39.92006682263289],
+                    [116.46024139914977, 39.9199845387995],
+                    [116.46025749240465, 39.92071686143578]
+                  ]
+                ]
+              }
+            },
+        ]
+      }
+
+      },
+      layout:{
+
+      },
+      paint:{
+        "fill-extrusion-height": 50,
+        "fill-extrusion-base": 10,
+        "fill-extrusion-color":"red",
+        "fill-extrusion-opacity": 0.5
+      }
+    })
+  })
+</script>

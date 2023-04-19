@@ -5,12 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="../../../../mapbox-gl-js/dist/mapbox-gl-dev.js"></script>
-  <link rel="stylesheet" href="../../../../mapbox-gl-js/dist/mapbox-gl.css">
+  <script src="../../../mapbox-gl-js/dist/mapbox-gl-dev.js"></script>
+  <link rel="stylesheet" href="../../../mapbox-gl-js/dist/mapbox-gl.css">
 </head>
 <body>
   <div id="map" style="width:800px;height:800px"></div>
-  <button id="draw">绘制</button>
 </body>
 </html>
 
@@ -24,17 +23,53 @@
       "center": [116.46, 39.92],
       zoom: 17,
       "style": "mapbox://styles/huangguangfa/clghetttb003g01o1dvhwxt1n",
-      // "style": "mapbox://styles/mapbox/satellite-streets-v11", // 卫星
       "accessToken": "pk.eyJ1IjoiaHVhbmdndWFuZ2ZhIiwiYSI6ImNsZ2hlZnZpazBrdmUzZ28yOGJ4cXZ2b2gifQ.cIemK-ILf_igHsL3VBaSsw",
-      attributionControl: true,
+      attributionControl: true
+    });
+    map.on('load', () => {
+      addLayer()
     })
   }
-  initMap()
+  function initInteraction(){
 
-  drawBtn.addEventListener('click', () => {
-    console.log('绘制')
+    map.on('mousedown', () => {
+      console.log('mousedown')
+    })
+    map.on('mouseup', () => {
+      console.log('mouseup')
+    })
+    map.on('mouseover', () => {
+      console.log('mouseover')
+    })
+    map.on('mousemove', () => {
+      console.log('mousemove')
+    })
+   
+
+    map.on('preclick', () => {
+      console.log('preclick')
+    })
+    map.on('click', () => {
+      console.log('click')
+    })
+    map.on('dblclick', () => {
+      console.log('dblclick')
+    })
+    
+    map.on('wheel', () => {
+      console.log('wheel');
+    });
+
+    map.on('idle', () => {
+      console.log('A idle event occurred.');
+    });
+
+  }
+
+  function addLayer(){
+    const layerId = "fill-extrusion-layer"
     map.addLayer({
-      id:"fill-extrusion-layer",
+      id:layerId,
       type:"fill-extrusion",
       source:{
         type:"geojson",
@@ -61,10 +96,6 @@
             },
         ]
       }
-
-      },
-      layout:{
-
       },
       paint:{
         "fill-extrusion-height": 50,
@@ -73,5 +104,32 @@
         "fill-extrusion-opacity": 0.5
       }
     })
-  })
+    map.on('mouseenter', layerId , () => {
+      console.log('layer mouseenter')
+    })
+    map.on('mouseleave', layerId, () => {
+      console.log('layer mouseleave')
+    })
+    map.on('mousedown', layerId , () => {
+      console.log('layer mousedown')
+    })
+    map.on('mouseup', layerId , () => {
+      console.log('layer mouseup')
+    })
+    map.on('mouseover', layerId , () => {
+      console.log('layer mouseover')
+    })
+    map.on('mousemove', layerId , () => {
+      console.log('layer mousemove')
+    })
+    map.on('contextmenu', layerId , () => {
+      console.log('layer contextmenu')
+    })
+  }
+
+  initMap()
+  initInteraction()
+  
+
+ 
 </script>
