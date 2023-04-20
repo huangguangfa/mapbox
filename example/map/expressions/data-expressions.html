@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../../../mapbox-gl-js/dist/mapbox-gl-dev.js"></script>
+  <link rel="stylesheet" href="../../../mapbox-gl-js/dist/mapbox-gl.css">
+</head>
+<body>
+  <div id="map" style="width:800px;height:800px"></div>
+  <button id="draw">绘制</button>
+</body>
+</html>
+<script type="module">
+  const mapContainer = document.getElementById('map');
+  const drawBtn = document.getElementById('draw');
+  let map
+  function initMap(){
+    map = new mapboxgl.Map({
+      "container": mapContainer,
+      "center": [116.46, 39.92],
+      zoom: 17,
+      "style": "mapbox://styles/huangguangfa/clghetttb003g01o1dvhwxt1n",
+      "accessToken": "pk.eyJ1IjoiaHVhbmdndWFuZ2ZhIiwiYSI6ImNsZ2hlZnZpazBrdmUzZ28yOGJ4cXZ2b2gifQ.cIemK-ILf_igHsL3VBaSsw",
+      attributionControl: true
+    });
+    map.on('zoom', (e) => {
+      console.log('zoom', map.getZoom())
+    }) 
+  }
+  initMap()
+
+  drawBtn.addEventListener('click', () => {
+    // 解释： 使用匹配的方式，根据id的值来判断使用哪种颜色
+    const matchColor = [
+      'match', // match 操作符
+      ['get', 'id'], // 获取properties 里面的id
+      '1', // id === 1 的话使用red 否者使用blue
+      'red',
+      'blue'
+    ]
+    // 解释： 动态的使用zoom 函数去控制 opacity
+    const interpolateOpacity = [
+      'interpolate', // interpolate 操作符
+      ['linear'], // 线性关系 linear
+      ['zoom'], 
+      5, .1, // 当 zoom >= 5 时，opacity 为 0.2
+      10, 0.5, // 当 zoom >= 10 时，opacity 为 0.5
+      15, 1 // 当 zoom >= 15 时，opacity 为 1
+    ]
+    // 解释： 获取源数据中的 radius 属性
+    const propertyRadius = [
+      'get',
+      'radius'
+    ]
+    // 解释： 获取源数据中的 radius 属性
+    const propertyRadiusMap = {
+      "type": "identity",
+      "property": "radius",
+    }
+    // 解释 使用 + 的操作符，取出属性的 w 和 h 进行相加
+    const accumulationNumber = [
+      "+",
+      ['get', 'w'],
+      ['get', 'h'],
+    ]
+
+    map.addLayer({
+      id:'circle-layer',
+      type:"circle",
+      source:{
+        type:'geojson',
+        data:{
+          type:"FeatureCollection",
+          features:[
+             {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [116.03409144090779, 40.092952715083555]   
+              },
+              properties: {
+                title: "测试1",
+                id:"1",
+                radius:100,
+                w:1,
+                h:2
+              }
+            }, 
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates:[116.4581492757797, 39.92055952798637]
+              },
+              properties: {
+                title: "测试2",
+                id:"2",
+                radius:10,
+                w:10,
+                h:2
+              }
+            }, 
+          ]
+        }
+      },
+      paint:{
+        'circle-radius': propertyRadius,
+        'circle-color': matchColor,
+        'circle-opacity': interpolateOpacity,
+        'circle-stroke-width': accumulationNumber,
+      }
+    })
+
+  })
+</script>
