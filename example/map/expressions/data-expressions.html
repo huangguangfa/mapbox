@@ -67,6 +67,28 @@
       ['get', 'h'],
     ]
 
+//     {
+//      "circle-radius": {
+//          "property": "rating",
+//          "stops": [
+//              [{zoom: 0, value: 0}, 0], // 当 zoom 为 0，且属性 rating 值为 0 时，circle-radius 为 0，依次类推
+//              [{zoom: 0, value: 5}, 5],
+//              [{zoom: 20, value: 0}, 0],
+//              [{zoom: 20, value: 5}, 20]
+//          ],
+//          "base": 1, // 插值计算的基数（可选，默认值为 1）
+//          "type": "interval", // 类型（可选，可选值为 identity、exponential、interval、categorical，默认值为 interval）
+//          // --- identity：一致型（将输入值作为输出值）
+//          // --- exponential：指数连续型（在断点之间生成插值）
+//          // --- interval：间隔型（输出值刚好小于输入值的一系列输出，呈阶梯状）
+//          // --- categorical：分类型（将和输入值一致的输出）
+//          "defaul": "#000000", // 默认值
+//          "colorSpace": "rgb", // 色彩空间（可选，可选值为 rgb、lab、hcl）
+//      }
+// }
+
+
+
     map.addLayer({
       id:'circle-layer',
       type:"circle",
